@@ -46,28 +46,28 @@ ALTER FUNCTION public.add_passports(p_first_name text, p_last_name character var
 -- Name: add_user(text, text, text, text, numeric, integer); Type: FUNCTION; Schema: public; Owner: amin1
 --
 
-CREATE FUNCTION public.add_user(p_first_namae text, p_last_name text, p_middle_name text, p_phone_number text, p_balance numeric, p_tarif_id integer) RETURNS void
+CREATE FUNCTION public.add_user(p_phone_number text, p_balance numeric, p_tarif_id integer, p_passport_id integer) RETURNS void
     LANGUAGE plpgsql
     AS $$ BEGIN
 INSERT INTO users(
-first_name, last_name, middle_name, phone_number, balance, tarif_id
-) VALUES (p_first_name, p_last_name, p_middle_name, p_phone_number, p_balance, p_tarif_id); END; $$;
+phone_number, balance, tarif_id, passport_id
+) VALUES (p_phone_number, p_balance, p_tarif_id, p_passport_id); END; $$;
 
 
-ALTER FUNCTION public.add_user(p_first_namae text, p_last_name text, p_middle_name text, p_phone_number text, p_balance numeric, p_tarif_id integer) OWNER TO amin1;
+ALTER FUNCTION public.add_user(p_phone_number text, p_balance numeric, p_tarif_id integer, p_passport_id integer) OWNER TO amin1;
 
 --
 -- Name: add_users(text, text, text, numeric, numeric, numeric); Type: FUNCTION; Schema: public; Owner: amin1
 --
 
-CREATE FUNCTION public.add_users(u_first_name text, u_last_name text, u_middle_name text, u_phone_number numeric, u_balance numeric, u_tarif_id numeric) RETURNS void
+CREATE FUNCTION public.add_users(u_phone_number numeric, u_balance numeric, u_tarif_id numeric, u_passport_id integer) RETURNS void
     LANGUAGE sql
     AS $$
-INSERT INTO users (first_name, last_name, middle_name, phone_number, balance, tarif_id) 
-VALUES (u_first_name, u_last_name, u_middle_name, u_phone_number, u_balance, u_tarif_id) $$;
+INSERT INTO users (phone_number, balance, tarif_id, passport_id) 
+VALUES (u_phone_number, u_balance, u_tarif_id, u_passport_id) $$;
 
 
-ALTER FUNCTION public.add_users(u_first_name text, u_last_name text, u_middle_name text, u_phone_number numeric, u_balance numeric, u_tarif_id numeric) OWNER TO amin1;
+ALTER FUNCTION public.add_users(u_phone_number numeric, u_balance numeric, u_tarif_id numeric, u_passport_id) OWNER TO amin1;
 
 --
 -- Name: change_tarif(character varying, integer); Type: FUNCTION; Schema: public; Owner: amin1
@@ -99,7 +99,7 @@ ALTER FUNCTION public.update_balance(b_phone_number character varying, b_amount 
 
 CREATE FUNCTION public.user_info(p_first_name text, p_last_name text, p_phone_number text) RETURNS TABLE(id bigint, first_name text, last_name text, middle_name text, phone_number text, balance numeric, tarif_id integer)
     LANGUAGE sql
-    AS $$ SELECT * FROM users WHERE 
+    AS $$ SELECT * FROM passports JOIN users ON passports.id = users.passport_id WHERE 
 first_name = p_first_name 
 AND p_last_name = last_name 
 AND p_phone_number = phone_number; $$;
