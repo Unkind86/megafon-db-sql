@@ -99,5 +99,5 @@ psql -U postgres -d megafon_db < megafon_project.sql
 
 ## 👤 Автор
 
-Unkind — начинающий разработчик с уверенным владением SQL и PostgreSQL.
+Unkind
 GitHub: [Unkind](https://github.com/Unkind)
